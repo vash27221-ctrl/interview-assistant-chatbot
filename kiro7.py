@@ -351,6 +351,7 @@ class InterviewOrchestrator:
     def __init__(self, domain):
         self.domain = domain
         self.hesitation_streak = 0
+        self.vague_streak = 0  # Track consecutive poor answers
         self.conversation_history = []
         self.last_question = ""
         self.low_score_streak = 0
@@ -748,6 +749,19 @@ class InterviewOrchestrator:
         else:
             self.hesitation_streak = 0
 
+        # Track consecutive vague/incorrect/evasive answers (MORE AGGRESSIVE)
+        if answer_type in ("VAGUE", "FACTUALLY_INCORRECT", "EVASIVE_NON_ANSWER", "EVASIVE_CHALLENGE"):
+            self.vague_streak += 1
+        else:
+            self.vague_streak = 0
+        
+        # AUTO-CONVERT 2 consecutive poor answers into KNOWLEDGE_GAP (faster pivot on gibberish)
+        if self.vague_streak >= 2:
+            answer_type = "KNOWLEDGE_GAP"
+            analysis["answer_type"] = "KNOWLEDGE_GAP"
+            print("...Multiple consecutive poor answers detected → treating as KNOWLEDGE_GAP for mercy pivot.")
+            self.vague_streak = 0  # Reset
+
         # AUTO-CONVERT 2 consecutive hesitations into KNOWLEDGE_GAP (user requested)
         if self.hesitation_streak >= 2 and answer_type == "HESITATION_SIGNAL":
             answer_type = "KNOWLEDGE_GAP"
@@ -840,7 +854,7 @@ class InterviewOrchestrator:
         print(f"...Score ({score}) [{grade_letter}] Analysis...")
 
         # ------- Minimal density-based fallback (replaces hard strike-limit) -------
-        density_window = 3
+        density_window = 2  # Reduced for faster pivot
         density_thresh = 0.75  # e.g., 75% of window being L triggers pivot
         recent_for_density = self.recent_scores[-density_window:]
         low_count = sum(1 for s in recent_for_density if s <= 1.5)
@@ -1936,7 +1950,7 @@ class InterviewOrchestrator:
         print(f"...Score ({score}) [{grade_letter}] Analysis...")
 
         # ------- Minimal density-based fallback (replaces hard strike-limit) -------
-        density_window = 3
+        density_window = 2  # Reduced for faster pivot
         density_thresh = 0.75  # e.g., 75% of window being L triggers pivot
         recent_for_density = self.recent_scores[-density_window:]
         low_count = sum(1 for s in recent_for_density if s <= 1.5)
@@ -3086,7 +3100,7 @@ class InterviewOrchestrator:
         print(f"...Score ({score}) [{grade_letter}] Analysis...")
 
         # ------- Minimal density-based fallback (replaces hard strike-limit) -------
-        density_window = 3
+        density_window = 2  # Reduced for faster pivot
         density_thresh = 0.75  # e.g., 75% of window being L triggers pivot
         recent_for_density = self.recent_scores[-density_window:]
         low_count = sum(1 for s in recent_for_density if s <= 1.5)
