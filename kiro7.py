@@ -679,7 +679,7 @@ class InterviewOrchestrator:
             print(f"...Remote SLM FAILED (Exception): {e}")
             return None
 
-        def _get_slm_triage_question(self):
+    def _get_slm_triage_question(self):
         """[Call Type 4] Calls the SLM (local or remote) to *think*."""
         if self.slm_mode == "none":
             print("...SLM not loaded. Skipping...")
