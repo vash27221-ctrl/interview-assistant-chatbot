@@ -749,8 +749,8 @@ class InterviewOrchestrator:
         else:
             self.hesitation_streak = 0
 
-        # Track consecutive vague/incorrect/evasive answers (MORE AGGRESSIVE)
-        if answer_type in ("VAGUE", "FACTUALLY_INCORRECT", "EVASIVE_NON_ANSWER", "EVASIVE_CHALLENGE"):
+        # Track consecutive vague/incorrect/evasive/hesitation answers (MORE AGGRESSIVE)
+        if answer_type in ("VAGUE", "FACTUALLY_INCORRECT", "EVASIVE_NON_ANSWER", "EVASIVE_CHALLENGE", "HESITATION_SIGNAL"):
             self.vague_streak += 1
         else:
             self.vague_streak = 0
@@ -761,8 +761,9 @@ class InterviewOrchestrator:
             analysis["answer_type"] = "KNOWLEDGE_GAP"
             print("...Multiple consecutive poor answers detected → treating as KNOWLEDGE_GAP for mercy pivot.")
             self.vague_streak = 0  # Reset
+            self.hesitation_streak = 0  # Also reset hesitation
 
-        # AUTO-CONVERT 2 consecutive hesitations into KNOWLEDGE_GAP (user requested)
+        # AUTO-CONVERT 2 consecutive hesitations into KNOWLEDGE_GAP (user requested) - REDUNDANT NOW but kept for compatibility
         if self.hesitation_streak >= 2 and answer_type == "HESITATION_SIGNAL":
             answer_type = "KNOWLEDGE_GAP"
             analysis["answer_type"] = "KNOWLEDGE_GAP"
