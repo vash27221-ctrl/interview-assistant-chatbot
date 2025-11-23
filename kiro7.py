@@ -17,7 +17,13 @@ import google.generativeai as genai
 import os
 import json
 import time
-from llama_cpp import Llama
+# Try to import llama_cpp, but don't fail if not available (cloud deployment)
+try:
+    from llama_cpp import Llama
+    LLAMA_AVAILABLE = True
+except ImportError:
+    LLAMA_AVAILABLE = False
+    print("⚠️  llama-cpp-python not available. Running in Gemini-only mode.")
 from dotenv import load_dotenv
 import re
 import random
