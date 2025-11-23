@@ -206,9 +206,19 @@ CRITICAL CONSTRAINTS:
 - Do NOT use praise words (good, great, excellent, nice, fascinating, interesting) for weak, vague, incorrect, or hesitation answers.
 - You MAY output up to TWO short sentences:
   1) a short transition phrase (3-10 words) — OPTIONAL but allowed,
-  2) a concise factual question (<=20 words).
+  2) a HIGH-QUALITY factual question (<=20 words).
 - The final output must be natural, conversational, and not lecturing.
 - Do NOT repeat the exact last 1-2 assistant questions.
+
+**QUESTION QUALITY RULES:**
+- Do NOT just echo words from the candidate's answer and ask "what does X do?"
+- INSTEAD, ask questions that test deeper understanding:
+  • Request concrete examples or real-world applications
+  • Ask about specific algorithms, techniques, or mechanisms
+  • Compare related concepts or explore trade-offs
+  • Correct misconceptions and ask for clarification
+  • Ask "how would you implement/apply [concept]?" not "what is [concept]?"
+- If candidate is vague, ask for specifics, not more vagueness
 
 Strategic Hint: {hint}
 
@@ -258,14 +268,27 @@ Your Task:
 2) Otherwise:
    - Start with one short (3–7 word) natural feedback phrase (no lecture).
    - CRITICAL: Do NOT use praise words (good, great, excellent, nice, fascinating, interesting) if answer_type is VAGUE, FACTUALLY_INCORRECT, EVASIVE_NON_ANSWER, or EVASIVE_CHALLENGE.
-   - Then ask exactly one concise factual follow-up (<=20 words).
+   - Then ask exactly one HIGH-QUALITY follow-up question (<=20 words).
    - Output may be two sentences: feedback sentence + question sentence.
-3) Under all circumstances:
+
+3) **CRITICAL - QUESTION QUALITY RULES:**
+   - Do NOT just pick words from the candidate's answer and ask "what does X do?" or "how does X work?"
+   - Do NOT ask vague questions like "tell me more" or "can you elaborate?"
+   - INSTEAD, ask questions that:
+     a) Request concrete examples: "Can you give an example of [concept] in practice?"
+     b) Test understanding: "How would you apply [concept] to [specific scenario]?"
+     c) Explore mechanisms: "What algorithm or technique is used for [task]?"
+     d) Compare concepts: "What's the difference between [A] and [B]?"
+     e) Correct misconceptions: If answer is wrong, gently correct and ask for clarification
+     f) Go deeper: Ask about trade-offs, challenges, or real-world applications
+   - If answer is VAGUE or INCORRECT, ask for specifics, examples, or mechanisms, not just "what does X mean?"
+
+4) Under all circumstances:
    - Do NOT use semicolons.
    - Do NOT use any forbidden robotic transitions: {forbidden}.
    - Do NOT repeat any of the last 1–2 assistant questions.
    - Output EXACTLY the feedback/acknowledgement + question (1-2 sentences), nothing else.
-4) Feedback rules:
+5) Feedback rules:
    - You MAY optionally skip the feedback phrase entirely (0–1 sentences). If you choose to include feedback, vary it widely and avoid repeating earlier patterns.
    - When you choose to include feedback, rotate between:
    - brief affirmations ("Alright", "Got it", "Makes sense")
@@ -1261,9 +1284,19 @@ CRITICAL CONSTRAINTS:
 - Do NOT use praise words (good, great, excellent, nice, fascinating, interesting) for weak, vague, incorrect, or hesitation answers.
 - You MAY output up to TWO short sentences:
   1) a short transition phrase (3-10 words) — OPTIONAL but allowed,
-  2) a concise factual question (<=20 words).
+  2) a HIGH-QUALITY factual question (<=20 words).
 - The final output must be natural, conversational, and not lecturing.
 - Do NOT repeat the exact last 1-2 assistant questions.
+
+**QUESTION QUALITY RULES:**
+- Do NOT just echo words from the candidate's answer and ask "what does X do?"
+- INSTEAD, ask questions that test deeper understanding:
+  • Request concrete examples or real-world applications
+  • Ask about specific algorithms, techniques, or mechanisms
+  • Compare related concepts or explore trade-offs
+  • Correct misconceptions and ask for clarification
+  • Ask "how would you implement/apply [concept]?" not "what is [concept]?"
+- If candidate is vague, ask for specifics, not more vagueness
 
 Strategic Hint: {hint}
 
@@ -1313,14 +1346,27 @@ Your Task:
 2) Otherwise:
    - Start with one short (3–7 word) natural feedback phrase (no lecture).
    - CRITICAL: Do NOT use praise words (good, great, excellent, nice, fascinating, interesting) if answer_type is VAGUE, FACTUALLY_INCORRECT, EVASIVE_NON_ANSWER, or EVASIVE_CHALLENGE.
-   - Then ask exactly one concise factual follow-up (<=20 words).
+   - Then ask exactly one HIGH-QUALITY follow-up question (<=20 words).
    - Output may be two sentences: feedback sentence + question sentence.
-3) Under all circumstances:
+
+3) **CRITICAL - QUESTION QUALITY RULES:**
+   - Do NOT just pick words from the candidate's answer and ask "what does X do?" or "how does X work?"
+   - Do NOT ask vague questions like "tell me more" or "can you elaborate?"
+   - INSTEAD, ask questions that:
+     a) Request concrete examples: "Can you give an example of [concept] in practice?"
+     b) Test understanding: "How would you apply [concept] to [specific scenario]?"
+     c) Explore mechanisms: "What algorithm or technique is used for [task]?"
+     d) Compare concepts: "What's the difference between [A] and [B]?"
+     e) Correct misconceptions: If answer is wrong, gently correct and ask for clarification
+     f) Go deeper: Ask about trade-offs, challenges, or real-world applications
+   - If answer is VAGUE or INCORRECT, ask for specifics, examples, or mechanisms, not just "what does X mean?"
+
+4) Under all circumstances:
    - Do NOT use semicolons.
    - Do NOT use any forbidden robotic transitions: {forbidden}.
    - Do NOT repeat any of the last 1–2 assistant questions.
    - Output EXACTLY the feedback/acknowledgement + question (1-2 sentences), nothing else.
-4) Feedback rules:
+5) Feedback rules:
    - You MAY optionally skip the feedback phrase entirely (0–1 sentences). If you choose to include feedback, vary it widely and avoid repeating earlier patterns.
    - When you choose to include feedback, rotate between:
    - brief affirmations ("Alright", "Got it", "Makes sense")
@@ -2333,9 +2379,19 @@ CRITICAL CONSTRAINTS:
 - Do NOT use praise words (good, great, excellent, nice, fascinating, interesting) for weak, vague, incorrect, or hesitation answers.
 - You MAY output up to TWO short sentences:
   1) a short transition phrase (3-10 words) — OPTIONAL but allowed,
-  2) a concise factual question (<=20 words).
+  2) a HIGH-QUALITY factual question (<=20 words).
 - The final output must be natural, conversational, and not lecturing.
 - Do NOT repeat the exact last 1-2 assistant questions.
+
+**QUESTION QUALITY RULES:**
+- Do NOT just echo words from the candidate's answer and ask "what does X do?"
+- INSTEAD, ask questions that test deeper understanding:
+  • Request concrete examples or real-world applications
+  • Ask about specific algorithms, techniques, or mechanisms
+  • Compare related concepts or explore trade-offs
+  • Correct misconceptions and ask for clarification
+  • Ask "how would you implement/apply [concept]?" not "what is [concept]?"
+- If candidate is vague, ask for specifics, not more vagueness
 
 Strategic Hint: {hint}
 
@@ -2385,14 +2441,27 @@ Your Task:
 2) Otherwise:
    - Start with one short (3–7 word) natural feedback phrase (no lecture).
    - CRITICAL: Do NOT use praise words (good, great, excellent, nice, fascinating, interesting) if answer_type is VAGUE, FACTUALLY_INCORRECT, EVASIVE_NON_ANSWER, or EVASIVE_CHALLENGE.
-   - Then ask exactly one concise factual follow-up (<=20 words).
+   - Then ask exactly one HIGH-QUALITY follow-up question (<=20 words).
    - Output may be two sentences: feedback sentence + question sentence.
-3) Under all circumstances:
+
+3) **CRITICAL - QUESTION QUALITY RULES:**
+   - Do NOT just pick words from the candidate's answer and ask "what does X do?" or "how does X work?"
+   - Do NOT ask vague questions like "tell me more" or "can you elaborate?"
+   - INSTEAD, ask questions that:
+     a) Request concrete examples: "Can you give an example of [concept] in practice?"
+     b) Test understanding: "How would you apply [concept] to [specific scenario]?"
+     c) Explore mechanisms: "What algorithm or technique is used for [task]?"
+     d) Compare concepts: "What's the difference between [A] and [B]?"
+     e) Correct misconceptions: If answer is wrong, gently correct and ask for clarification
+     f) Go deeper: Ask about trade-offs, challenges, or real-world applications
+   - If answer is VAGUE or INCORRECT, ask for specifics, examples, or mechanisms, not just "what does X mean?"
+
+4) Under all circumstances:
    - Do NOT use semicolons.
    - Do NOT use any forbidden robotic transitions: {forbidden}.
    - Do NOT repeat any of the last 1–2 assistant questions.
    - Output EXACTLY the feedback/acknowledgement + question (1-2 sentences), nothing else.
-4) Feedback rules:
+5) Feedback rules:
    - You MAY optionally skip the feedback phrase entirely (0–1 sentences). If you choose to include feedback, vary it widely and avoid repeating earlier patterns.
    - When you choose to include feedback, rotate between:
    - brief affirmations ("Alright", "Got it", "Makes sense")
