@@ -1,0 +1,75 @@
+# Environment variables
+.env
+.env.local
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# Model files (too large for git)
+*.gguf
+*.bin
+*.safetensors
+
+# Streamlit
+.streamlit/secrets.toml
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Old test/development files (not needed for deployment)
+kiro1.py
+kiro2.py
+kiro3.py
+kiro4.py
+kiro5.py
+kiro6.py
+kirosave7.py
+new_bot.py
+new2_bot.py
+new3_bot.py
+new4_bot.py
+new5_bot.py
+interview_bot.py
+main.py
+auto_driver.py
+check_api.py
+evaluator.py
+gemini_api.py
+logger.py
+prompt_templates.py
+reserved_testslm.py
+slm_followup.py
+state_manager.py
+test_runner.py
+test_slm_new.py
+test_slm.py
+topic_algo.py
+
+# Training data (not needed for deployment)
+training_data_sample.jsonl
+training_data.jsonl
+
+# Alternative model file (keep only the F16 version)
+phi3_interview_merged.Q4_K_M.gguf
+
+# Cloud version (not needed, we use kiro7.py)
+kiro7_cloud.py
