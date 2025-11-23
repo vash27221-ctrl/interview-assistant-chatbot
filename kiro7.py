@@ -358,23 +358,46 @@ class InterviewOrchestrator:
 
         # 2. Configure SLM
         self.slm_model = None
-        try:
-            print(f"Loading SLM from: {SLM_MODEL_PATH}...")
-            print("This will take a moment as it loads into your M4's GPU RAM...")
-            start_load = time.time()
-            self.slm_model = Llama(
-                model_path=SLM_MODEL_PATH,
-                n_gpu_layers=-1,
-                n_ctx=2048,
-                verbose=False
-            )
-            load_time = time.time() - start_load
-            print(f"✅ SLM (GGUF) model loaded in {load_time:.2f} seconds.")
-        except Exception as e:
-            print(f"❌ FAILED TO LOAD SLM MODEL from {SLM_MODEL_PATH}")
-            print(f"   Make sure 'SLM_MODEL_PATH' is correct.")
-            print(f"   Error: {e}")
-            print("   Will continue in Gemini-only fallback mode.")
+        self.slm_endpoint = os.getenv("SLM_ENDPOINT", "")
+        self.slm_mode = "none"  # "local", "remote", or "none"
+        
+        # Check if we should use remote SLM (cloud deployment with ngrok)
+        if self.slm_endpoint:
+            print(f"🔗 Attempting to connect to remote SLM at: {self.slm_endpoint}")
+            try:
+                import requests
+                response = requests.get(f"{self.slm_endpoint}/health", timeout=5)
+                if response.status_code == 200 and response.json().get("model_loaded"):
+                    print(f"✅ Connected to remote SLM successfully!")
+                    self.slm_mode = "remote"
+                else:
+                    print("⚠️  Remote SLM not ready, using Gemini-only mode")
+            except Exception as e:
+                print(f"⚠️  Cannot reach remote SLM: {e}")
+                print("   Using Gemini-only mode")
+        
+        # Try local SLM if no remote endpoint and llama is available
+        elif LLAMA_AVAILABLE:
+            try:
+                print(f"Loading SLM from: {SLM_MODEL_PATH}...")
+                print("This will take a moment as it loads into your M4's GPU RAM...")
+                start_load = time.time()
+                self.slm_model = Llama(
+                    model_path=SLM_MODEL_PATH,
+                    n_gpu_layers=-1,
+                    n_ctx=2048,
+                    verbose=False
+                )
+                load_time = time.time() - start_load
+                self.slm_mode = "local"
+                print(f"✅ SLM (GGUF) model loaded in {load_time:.2f} seconds.")
+            except Exception as e:
+                print(f"❌ FAILED TO LOAD SLM MODEL from {SLM_MODEL_PATH}")
+                print(f"   Make sure 'SLM_MODEL_PATH' is correct.")
+                print(f"   Error: {e}")
+                print("   Will continue in Gemini-only fallback mode.")
+        else:
+            print("ℹ️  No SLM available. Running in Gemini-only mode.")
 
         # 3. Generate the Syllabus
         self.rate_limit_hit = False
@@ -619,12 +642,53 @@ class InterviewOrchestrator:
             # Important: DO NOT fallback to analyzer numeric score; instead return failure indicator
             return {"score": None, "score_reason": "Scorer failed"}
 
-    def _get_slm_triage_question(self):
-        """[Call Type 4] Calls the local SLM to *think*."""
-        if self.slm_model is None:
-            print("...SLM not loaded. Skipping...")
+    def _get_remote_slm_triage(self):
+        """Call remote SLM via ngrok API"""
+        print("...Calling remote SLM (Triage) via ngrok...")
+        try:
+            import requests
+            
+            system_content = PROMPT_SLM_TRIAGE.format(topic=self.current_topic)
+            
+            payload = {
+                "topic": self.current_topic,
+                "conversation_history": self.conversation_history,
+                "system_prompt": system_content
+            }
+            
+            response = requests.post(
+                f"{self.slm_endpoint}/triage",
+                json=payload,
+                timeout=15
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                if data.get("success"):
+                    text = data.get("text")
+                    if text == "[CONFIDENCE_LOW]":
+                        print("...Remote SLM triggered [CONFIDENCE_LOW].")
+                    else:
+                        print(f"...Remote SLM (Triage) generated draft: \"{text}\"")
+                    return text
+            
+            print(f"...Remote SLM call failed (status {response.status_code})")
+            return None
+            
+        except Exception as e:
+            print(f"...Remote SLM FAILED (Exception): {e}")
             return None
 
+        def _get_slm_triage_question(self):
+        """[Call Type 4] Calls the SLM (local or remote) to *think*."""
+        if self.slm_mode == "none":
+            print("...SLM not loaded. Skipping...")
+            return None
+        
+        if self.slm_mode == "remote":
+            return self._get_remote_slm_triage()
+        
+        # Local SLM mode
         print("...Calling local SLM (Triage) to *think*...")
 
         system_content = PROMPT_SLM_TRIAGE.format(topic=self.current_topic)
